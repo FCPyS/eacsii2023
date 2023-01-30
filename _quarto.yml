@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: "docs"
+
+website:
+  title: "EACSII-2023"
+  site-url: https://fcpys.github.io/eacsii2023/
+  repo-url: https://github.com/fcpys/eacsii2023/
+  repo-branch: main
+  repo-actions: [edit, issue]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Inicio
+      - href: equipo.qmd
+        text: Equipo docente
+      - href: about.qmd
+        text: Programa 
+
+
+format:
+  html:
+    theme: 
+      light: pulse
+      dark: darkly
+    css: styles.css
+    toc: true
+
+editor: visual
+
