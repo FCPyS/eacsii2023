@@ -28,6 +28,13 @@
     "text": "Biblio básica\n\nDrive"
   },
   {
+    "objectID": "instala.html",
+    "href": "instala.html",
+    "title": "EACSII-2023",
+    "section": "",
+    "text": "Desde octubre de 2022, RStudio se volvió “Posit”"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "Programa de trabajo",
@@ -74,14 +81,14 @@
     "href": "P1.html#mi-ambiente",
     "title": "Taller 1",
     "section": "Mi ambiente",
-    "text": "Mi ambiente\nTodos los objetos que hemos declarado hasta ahora son parte de nuestro “ambiente” (environment). Para saber qué está en nuestro ambiente usamos el comando\n\nls()\n\n[1] \"m\"         \"mi_matrix\" \"n\"         \"sex\"       \"x\"         \"xx\"       \n[7] \"y\"         \"yy\"       \n\ngc()           # Garbage collection, reporta memoria en uso\n\n          used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)\nNcells  642472 34.4    1241891 66.4         NA  1241891 66.4\nVcells 1166232  8.9    8388608 64.0      16384  1909351 14.6\n\n\nPara borrar todos nuestros objetos, usamos el siguiente comando, que equivale a usar la escobita de la venta de environment\n\nrm(list=ls())  # Borrar objetos actuales"
+    "text": "Mi ambiente\nTodos los objetos que hemos declarado hasta ahora son parte de nuestro “ambiente” (environment). Para saber qué está en nuestro ambiente usamos el comando\n\nls()\n\n[1] \"m\"         \"mi_matrix\" \"n\"         \"sex\"       \"x\"         \"xx\"       \n[7] \"y\"         \"yy\"       \n\ngc()           # Garbage collection, reporta memoria en uso\n\n          used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)\nNcells  642410 34.4    1241945 66.4         NA  1241945 66.4\nVcells 1166250  8.9    8388608 64.0      16384  1909329 14.6\n\n\nPara borrar todos nuestros objetos, usamos el siguiente comando, que equivale a usar la escobita de la venta de environment\n\nrm(list=ls())  # Borrar objetos actuales"
   },
   {
     "objectID": "P1.html#directorio-de-trabajo",
     "href": "P1.html#directorio-de-trabajo",
     "title": "Taller 1",
     "section": "Directorio de trabajo",
-    "text": "Directorio de trabajo\nEs muy útil saber dónde estamos trabajando y donde queremos trabajar. Por eso podemos utilizar los siguientes comandos para saberlo\nOjo, checa, si estás desdes una PC, cómo cambian las “” por”/” o por “\\”\n\ngetwd()           # Directorio actual\n\n[1] \"/Users/anaescoto/Library/CloudStorage/Dropbox/FCPyS 2023-II/eacsii2023\"\n\n#setwd(\"C:/Users/anaes/Dropbox/2021/CursoR-posgrado\")# Cambio de directorio\n\nlist.files()      # Lista de archivos en ese directorio\n\n [1] \"EACSII2023-2.pdf\" \"LICENSE\"          \"P1.qmd\"           \"P1.rmarkdown\"    \n [5] \"README.md\"        \"_quarto.yml\"      \"about.html\"       \"about.qmd\"       \n [9] \"docs\"             \"eacsii2023.Rproj\" \"equipo.qmd\"       \"index.html\"      \n[13] \"index.qmd\"        \"site_libs\""
+    "text": "Directorio de trabajo\nEs muy útil saber dónde estamos trabajando y donde queremos trabajar. Por eso podemos utilizar los siguientes comandos para saberlo\nOjo, checa, si estás desdes una PC, cómo cambian las “” por”/” o por “\\”\n\ngetwd()           # Directorio actual\n\n[1] \"/Users/anaescoto/Library/CloudStorage/Dropbox/FCPyS 2023-II/eacsii2023\"\n\n#setwd(\"C:/Users/anaes/Dropbox/2021/CursoR-posgrado\")# Cambio de directorio\n\nlist.files()      # Lista de archivos en ese directorio\n\n [1] \"EACSII2023-2.pdf\" \"LICENSE\"          \"P1.qmd\"           \"P1.rmarkdown\"    \n [5] \"README.md\"        \"_quarto.yml\"      \"about.html\"       \"about.qmd\"       \n [9] \"docs\"             \"eacsii2023.Rproj\" \"equipo.qmd\"       \"index.html\"      \n[13] \"index.qmd\"        \"instala.html\"     \"instala.qmd\"      \"scripts\"         \n[17] \"site_libs\""
   },
   {
     "objectID": "equipo.html",

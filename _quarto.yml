@@ -20,6 +20,9 @@ website:
     style: "docked"
     search: true
     contents:
+      - section: "Instalar R"
+        contents:
+          - instala.qmd
       - section: "Talleres"
         contents:
           - P1.qmd
