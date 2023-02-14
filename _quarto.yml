@@ -16,7 +16,13 @@ website:
         text: Equipo docente
       - href: about.qmd
         text: Programa 
-
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - section: "Talleres"
+        contents:
+          - P1.qmd
 
 format:
   html:
