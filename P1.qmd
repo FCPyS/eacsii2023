@@ -54,28 +54,6 @@ sex[2]            # Segundo elemento del vector sex
 
 ```
 
-## Matrices
-
-Las matrices son muy importantes, porque nos permiten hacer operaciones y casi todas nuestras bases de datos tendran un aspecto de matriz.
-
-```{r}
-m <- matrix (nrow=2, ncol=3, 1:6, byrow = TRUE) # Matrices Ejemplo 1
-m
-
-m <- matrix (nrow=2, ncol=3, 1:6, byrow = FALSE) # Matrices Ejemplo 1
-m
-dim(m)
-attributes(m)
-n <- 1:6     # Matrices Ejemplo 2
-dim(n) <- c(2,3)
-n
-xx <-10:12   # Matrices Ejemplo 3
-yy<-14:16
-cbind(xx,yy) # Une vectores por Columnas
-rbind(xx,yy) # Une vectores por Renglones
-
-mi_matrix<-cbind(xx,yy) # este resultado lo puedo asignar a un objeto
-```
 
 ## Funciones
 
@@ -124,3 +102,190 @@ getwd()           # Directorio actual
 
 list.files()      # Lista de archivos en ese directorio
 ```
+
+## Paquetes
+
+Los paquetes los podemos instalar ya sea en el menú de paquetes en la ventana del lado derecho inferior (si tienes la configuración original) o podemos hacerlo por comandos.
+
+![Paso1](ima/paquete1.png)
+
+![Paso2](ima/paquete2.png)
+
+![Paso3](ima/paquete3.png)
+
+Y se verá algo así en la consola
+
+![Paso4](ima/paquete4.png)
+
+Esto es igual que instalemos los paquetes con comandos:
+
+    install.packages("janitor", dependencies = TRUE)
+
+Después de instalados los paquetes o los palomeamos o los cargamos con un comando
+
+```{r}
+library(janitor)
+```
+
+Esto ya nos permite utilizarlos, es decir las funciones o comandos que vienen en ellos, ya pueden ser utilizados. Cargar los paquetes es una operación que se tiene que hacer en cada sesión (cuando abrimos) el programa R o RStudio. La instalación sólo se hace una vez.
+
+## Paquete `{pacman}`
+
+En general, cuando hacemos nuestro código querremos verificar que nuestras librerías estén instaladas. Si actualizamos nuestro R y Rstudio es probable que hayamos perdido alguno.
+
+Este es un ejemplo de un código. Y vamos a introducir un paquete muy útil llamado `{pacman}`
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instala pacman si se requiere
+pacman::p_load(tidyverse, readxl, writexl, haven, sjlabelled, pollster) #carga los paquetes listados
+
+```
+
+Hay muchos formatos de almacenamiento de bases de datos. Vamos a aprender a importar información desde ellos.
+
+## Datos para el curso
+
+Estos los puedes descargar desde el repo de la clase que hizo la profe <https://github.com/FCPyS/ac2023/tree/main/datos>
+
+### Desde Excel
+
+El paquete más compatible con RStudio es readxl. A veces, otros paquetes tienen más problemas de configuración entre R y el Java.
+
+```{r 3}
+ICE_2022 <- readxl::read_excel("datos/ICE_2022.xlsx", sheet = "para_importar")
+
+```
+
+Como el nombre de paquete lo indica, sólo lee. Para escribir en este formato, recomiendo el paquete "writexl". Lo instalamos anteriormente.
+
+Si quisiéramos exportar un objeto a Excel
+
+```{r 5}
+writexl::write_xlsx(ICE_2022, path = "mi_exportacion.xlsx")
+```
+
+### Desde STATA y SPSS
+
+Si bien también se puede realizar desde el paquete foreign. Pero este no importa algunas características como las etiquetas y tampoco funciona con las versiones más nuevas de STATA. Vamos a instalar otro paquete, compatible con el mundo tidyverse.
+
+Recuerda que no hay que instalarlo (viene adentro de tidyverse). Se instalasólo la primera vez. Una vez instalado un paquete, lo llamamos con el comando "library"
+
+```{r}
+enoet322socdem_tiempo <- haven::read_dta("datos/enoet322socdem_tiempo.dta")
+
+```
+
+!Importante, a R no le gustan los objetos con nombres que empiezan en números
+
+El paquete haven sí exporta información.
+
+```{r}
+haven::write_dta(enoet322socdem_tiempo, "datos/mi_exportacion.dta", version = 12)
+```
+
+Con SSPS es muy parecido. Dentro de "haven" hay una función específica para ello.
+
+Checa que en todas las exportaciones en los nombres hay que incluir **la extensión del programa**. Si quieres guardar en un lugar diferente al directorio del trabajo, hay que escribir toda la ruta dentro de la computadora.
+
+## Revisión de nuestra base
+
+Vamos a revisar la base, brevemente la base
+
+```{r}
+class(enoet322socdem_tiempo) # tipo de objeto
+names(enoet322socdem_tiempo) # lista las variables
+head(enoet322socdem_tiempo) # muestra las primeras 6 líneas
+table(enoet322socdem_tiempo$sex) # un tabulado simple
+```
+
+## Revisión con dplyr
+
+Operador de "pipe" o "tubería" %\>% (Ctrl+Shift+M) Antes de continuar, presentemos el operador "pipe" %\>%. dplyr importa este operador de otro paquete (magrittr). Este operador le permite canalizar la salida de una función a la entrada de otra función. En lugar de funciones de anidamiento (lectura desde adentro hacia afuera), la idea de la tubería es leer las funciones de izquierda a derecha.
+
+```{r}
+enoet322socdem_tiempo |> # este esl pipe nativo, funciona igual 
+    dplyr::select(sex, eda) %>% 
+    head()
+```
+
+```{r}
+enoet322socdem_tiempo %>% 
+    dplyr::select(sex, eda) %>% 
+    glimpse()
+```
+
+
+## Etiquetas y cómo usarlas
+
+Podemos ver que los objetos "data.frame"(*spoiler*, ya hablaremos de ellos)
+
+```{r}
+
+class(enoet322socdem_tiempo$sex)
+
+```
+
+### Ejemplo de etiquetado
+
+Para que se vea mejor nuestro tabulado, sería bueno que nuestras variables tuvieran etiqueta. Para ello utilizaremos el paquete "sjlabelled"
+
+```{r}
+
+# tabulado simple
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  janitor::tabyl(sex)
+
+# tabulado con factor de expansión
+
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  pollster::topline(sex, weight = fac_tri)
+  
+
+```
+
+### Ojeando
+
+```{r}
+dplyr::glimpse(enoet322socdem_tiempo)
+dplyr::glimpse(enoet322socdem_tiempo[,20:30]) # en corchete del lado derecho podemos ojear columnas 
+
+```
+
+Podemos hacer un tipo "labelbook", usando una función que viene de la librería "sjlabelled", "get_labels". Funciona para toda la base o para columnas, o para variables.
+
+```{r}
+#print(get_labels(enoet322socdem_tiempo)) #todas
+print(get_labels(enoet322socdem_tiempo[, 20:30])) #de las segundas 10 variables
+```
+
+En singular nos da las etiquetas de las variables, no de los valores:
+
+```{r}
+#print(get_label(enoet322socdem_tiempo)) #todas
+print(get_label(enoet322socdem_tiempo[, 1:10])) #de las primeras 10 variables
+print(get_label(enoet322socdem_tiempo$eda)) #
+```
+
+### Selección de casos y de variables
+
+Poco a poco vamos comprendiendo más la lógica de R. Hay varias "formas" de programar. Por lo que no te asustes si varios códigos llegan al mismo resultado
+
+Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos\$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.
+
+```{r}
+x<-enoet322socdem_tiempo$ing_cor
+x<-enoet322socdem_tiempo[["eda"]]  # ¡Ojo con las comillas! 
+x<-enoet322socdem_tiempo[,13]
+x<-enoet322socdem_tiempo[,"eda"]
+
+```
+
+Ahora, con el formato de dplyr podemos llegar a lo mismo
+
+```{r}
+x<-enoet322socdem_tiempo %>% 
+  select(eda)
+```
+
