@@ -54,7 +54,6 @@ sex[2]            # Segundo elemento del vector sex
 
 ```
 
-
 ## Funciones
 
 Algunas funciones básicas son las siguientes. Vamos a ir viendo más funciones, pero para entender cómo funcionan, haremos unos ejemplos y cómo pedir ayuda sobre ellas.
@@ -145,7 +144,7 @@ Hay muchos formatos de almacenamiento de bases de datos. Vamos a aprender a impo
 
 ## Datos para el curso
 
-Estos los puedes descargar desde el repo de la clase que hizo la profe <https://github.com/FCPyS/ac2023/tree/main/datos>
+Estos los puedes descargar desde el repo de la clase que hizo la profe <https://github.com/FCPyS/eacsii2023/tree/main/datos>
 
 ### Desde Excel
 
@@ -213,79 +212,3 @@ enoet322socdem_tiempo %>%
     dplyr::select(sex, eda) %>% 
     glimpse()
 ```
-
-
-## Etiquetas y cómo usarlas
-
-Podemos ver que los objetos "data.frame"(*spoiler*, ya hablaremos de ellos)
-
-```{r}
-
-class(enoet322socdem_tiempo$sex)
-
-```
-
-### Ejemplo de etiquetado
-
-Para que se vea mejor nuestro tabulado, sería bueno que nuestras variables tuvieran etiqueta. Para ello utilizaremos el paquete "sjlabelled"
-
-```{r}
-
-# tabulado simple
-enoet322socdem_tiempo %>% 
-  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
-  janitor::tabyl(sex)
-
-# tabulado con factor de expansión
-
-enoet322socdem_tiempo %>% 
-  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
-  pollster::topline(sex, weight = fac_tri)
-  
-
-```
-
-### Ojeando
-
-```{r}
-dplyr::glimpse(enoet322socdem_tiempo)
-dplyr::glimpse(enoet322socdem_tiempo[,20:30]) # en corchete del lado derecho podemos ojear columnas 
-
-```
-
-Podemos hacer un tipo "labelbook", usando una función que viene de la librería "sjlabelled", "get_labels". Funciona para toda la base o para columnas, o para variables.
-
-```{r}
-#print(get_labels(enoet322socdem_tiempo)) #todas
-print(get_labels(enoet322socdem_tiempo[, 20:30])) #de las segundas 10 variables
-```
-
-En singular nos da las etiquetas de las variables, no de los valores:
-
-```{r}
-#print(get_label(enoet322socdem_tiempo)) #todas
-print(get_label(enoet322socdem_tiempo[, 1:10])) #de las primeras 10 variables
-print(get_label(enoet322socdem_tiempo$eda)) #
-```
-
-### Selección de casos y de variables
-
-Poco a poco vamos comprendiendo más la lógica de R. Hay varias "formas" de programar. Por lo que no te asustes si varios códigos llegan al mismo resultado
-
-Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos\$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.
-
-```{r}
-x<-enoet322socdem_tiempo$ing_cor
-x<-enoet322socdem_tiempo[["eda"]]  # ¡Ojo con las comillas! 
-x<-enoet322socdem_tiempo[,13]
-x<-enoet322socdem_tiempo[,"eda"]
-
-```
-
-Ahora, con el formato de dplyr podemos llegar a lo mismo
-
-```{r}
-x<-enoet322socdem_tiempo %>% 
-  select(eda)
-```
-

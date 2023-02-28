@@ -1,0 +1,155 @@
+---
+title: "Taller 2"
+---
+
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instala pacman si se requiere
+pacman::p_load(tidyverse, readxl, writexl, haven, sjlabelled, pollster,
+               janitor, magrittr) #carga los paquetes listados
+
+```
+
+
+## Datos 
+
+Recuerda, estos los puedes descargar desde el repo de la clase que hizo la profe <https://github.com/FCPyS/eacsii2023/tree/main/datos>
+
+
+
+```{r}
+enoet322socdem_tiempo <- haven::read_dta("datos/enoet322socdem_tiempo.dta")
+```
+
+## Etiquetas y cómo usarlas
+
+Podemos ver que los objetos "data.frame"(*spoiler*, ya hablaremos de ellos)
+
+```{r}
+
+class(enoet322socdem_tiempo$sex)
+
+```
+
+### Ejemplo de etiquetado
+
+Para que se vea mejor nuestro tabulado, sería bueno que nuestras variables tuvieran etiqueta. Para ello utilizaremos el paquete "sjlabelled"
+
+```{r}
+
+# tabulado simple
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  janitor::tabyl(sex)
+
+# tabulado con factor de expansión
+
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  pollster::topline(sex, weight = fac_tri)
+  
+
+```
+
+### Ojeando
+
+```{r}
+dplyr::glimpse(enoet322socdem_tiempo)
+dplyr::glimpse(enoet322socdem_tiempo[,20:30]) # en corchete del lado derecho podemos ojear columnas 
+
+```
+
+Podemos hacer un tipo "labelbook", usando una función que viene de la librería "sjlabelled", "get_labels". Funciona para toda la base o para columnas, o para variables.
+
+```{r}
+#print(get_labels(enoet322socdem_tiempo)) #todas
+print(get_labels(enoet322socdem_tiempo[, 20:30])) #de las segundas 10 variables
+```
+
+En singular nos da las etiquetas de las variables, no de los valores:
+
+```{r}
+#print(get_label(enoet322socdem_tiempo)) #todas
+print(get_label(enoet322socdem_tiempo[, 1:10])) #de las primeras 10 variables
+print(get_label(enoet322socdem_tiempo$eda)) #
+```
+
+### Selección de casos y de variables
+
+Poco a poco vamos comprendiendo más la lógica de R. Hay varias "formas" de programar. Por lo que no te asustes si varios códigos llegan al mismo resultado
+
+Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos\$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.
+
+```{r}
+x<-enoet322socdem_tiempo$ing_cor
+x<-enoet322socdem_tiempo[["eda"]]  # ¡Ojo con las comillas! 
+x<-enoet322socdem_tiempo[,13]
+x<-enoet322socdem_tiempo[,"eda"]
+
+```
+
+Ahora, con el formato de dplyr podemos llegar a lo mismo
+
+```{r}
+x<-enoet322socdem_tiempo %>% 
+  select(eda)
+```
+
+
+## Importación desde Excel
+
+El paquete más compatible con RStudio es readxl. A veces, otros paquetes tienen más problemas de configuración entre R y el Java.
+
+```{r 3}
+ICE_2022 <- readxl::read_excel("datos/ICE_2022.xlsx", sheet = "para_importar")
+
+```
+
+Como el nombre de paquete lo indica, sólo lee. Para escribir en este formato, recomiendo el paquete "writexl". Lo instalamos anteriormente.
+
+Si quisiéramos exportar un objeto a Excel
+
+```{r 5}
+writexl::write_xlsx(ICE_2022, path = "mi_exportacion.xlsx")
+```
+
+
+## Limpieza de nombres
+
+A este data.frame podemos limpiarle los nombres, como vemos, sus nombres están "raros". Esto pasa cuando usamos espacios, caracteres especiales o nombres muy largos. 
+
+Veamos los nombre
+
+```{r}
+ICE_2022 %>% 
+  names()
+```
+
+los vamos a limpiar:
+
+```{r}
+ICE_2022 %>% 
+  janitor::clean_names() %>% 
+  names()
+```
+
+Pero! Tenemos que volver a declarar el objeto con los cambios para que se guarden en el objeto
+
+
+```{r}
+ICE_2022<-ICE_2022 %>% 
+  janitor::clean_names()
+```
+
+
+## Otro operador
+
+Esta operación de guardar las acciones del *pipe*  `%>%`  en el mismo objeto del que inician, se puede hacer con otro operador muy parecido `%<>%`
+
+
+```{r}
+ICE_2022 %<>% 
+  janitor::clean_names()
+```
+
+¡Llevemos esta base a esquisse!
