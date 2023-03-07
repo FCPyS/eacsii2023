@@ -229,10 +229,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#datos" id="toc-datos" class="nav-link active" data-scroll-target="#datos">Datos</a></li>
-  <li><a href="#etiquetas-y-cómo-usarlas" id="toc-etiquetas-y-cómo-usarlas" class="nav-link" data-scroll-target="#etiquetas-y-cómo-usarlas">Etiquetas y cómo usarlas</a>
-  <ul class="collapse">
+  <li><a href="#etiquetas-y-cómo-usarlas" id="toc-etiquetas-y-cómo-usarlas" class="nav-link" data-scroll-target="#etiquetas-y-cómo-usarlas">Etiquetas y cómo usarlas</a></li>
   <li><a href="#ejemplo-de-etiquetado" id="toc-ejemplo-de-etiquetado" class="nav-link" data-scroll-target="#ejemplo-de-etiquetado">Ejemplo de etiquetado</a></li>
-  <li><a href="#ojeando" id="toc-ojeando" class="nav-link" data-scroll-target="#ojeando">Ojeando</a></li>
+  <li><a href="#descriptivos-para-variables-cuantitativas" id="toc-descriptivos-para-variables-cuantitativas" class="nav-link" data-scroll-target="#descriptivos-para-variables-cuantitativas">Descriptivos para variables cuantitativas</a>
+  <ul class="collapse">
+  <li><a href="#medidas-numéricas-básicas" id="toc-medidas-numéricas-básicas" class="nav-link" data-scroll-target="#medidas-numéricas-básicas">Medidas numéricas básicas</a></li>
+  <li><a href="#histograma-básico" id="toc-histograma-básico" class="nav-link" data-scroll-target="#histograma-básico">Histograma básico</a></li>
+  </ul></li>
+  <li><a href="#tabulados-bivariados" id="toc-tabulados-bivariados" class="nav-link" data-scroll-target="#tabulados-bivariados">Tabulados bivariados</a></li>
+  <li><a href="#ojeando" id="toc-ojeando" class="nav-link" data-scroll-target="#ojeando">Ojeando</a>
+  <ul class="collapse">
   <li><a href="#selección-de-casos-y-de-variables" id="toc-selección-de-casos-y-de-variables" class="nav-link" data-scroll-target="#selección-de-casos-y-de-variables">Selección de casos y de variables</a></li>
   </ul></li>
   <li><a href="#importación-desde-excel" id="toc-importación-desde-excel" class="nav-link" data-scroll-target="#importación-desde-excel">Importación desde Excel</a></li>
@@ -285,8 +291,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] "haven_labelled" "vctrs_vctr"     "double"        </code></pre>
 </div>
 </div>
-<section id="ejemplo-de-etiquetado" class="level3">
-<h3 class="anchored" data-anchor-id="ejemplo-de-etiquetado">Ejemplo de etiquetado</h3>
+</section>
+<section id="ejemplo-de-etiquetado" class="level2">
+<h2 class="anchored" data-anchor-id="ejemplo-de-etiquetado">Ejemplo de etiquetado</h2>
 <p>Para que se vea mejor nuestro tabulado, sería bueno que nuestras variables tuvieran etiqueta. Para ello utilizaremos el paquete “sjlabelled”</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tabulado simple</span></span>
@@ -321,10 +328,90 @@ Caused by warning:
 </div>
 </div>
 </section>
-<section id="ojeando" class="level3">
-<h3 class="anchored" data-anchor-id="ojeando">Ojeando</h3>
+<section id="descriptivos-para-variables-cuantitativas" class="level2">
+<h2 class="anchored" data-anchor-id="descriptivos-para-variables-cuantitativas">Descriptivos para variables cuantitativas</h2>
+<p>Vamos a empezar a revisar los gráficos para variables cuantitativas.</p>
+<section id="medidas-numéricas-básicas" class="level3">
+<h3 class="anchored" data-anchor-id="medidas-numéricas-básicas">Medidas numéricas básicas</h3>
+<p>5 números</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(enoet322socdem_tiempo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(enoet322socdem_tiempo<span class="sc">$</span>eda) <span class="do">## eda</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   0.00   16.00   32.00   34.02   50.00   97.00     247 </code></pre>
+</div>
+</div>
+<p>Con pipes se pueden crear “indicadores” de nuestras variables es un tibble</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>enoet322socdem_tiempo <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nombre_indicador=</span><span class="fu">mean</span>(eda, <span class="at">na.rm=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  nombre_indicador
+             &lt;dbl&gt;
+1             34.0</code></pre>
+</div>
+</div>
+</section>
+<section id="histograma-básico" class="level3">
+<h3 class="anchored" data-anchor-id="histograma-básico">Histograma básico</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(enoet322socdem_tiempo<span class="sc">$</span>eda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="P2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Le podemos modificar el título del eje de las x y de las y</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(enoet322socdem_tiempo<span class="sc">$</span>eda, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Histograma de las edades de los entrevistados"</span>, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Años cumplidos"</span>, <span class="at">ylab=</span><span class="st">"Frecuencia"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="P2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="tabulados-bivariados" class="level2">
+<h2 class="anchored" data-anchor-id="tabulados-bivariados">Tabulados bivariados</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tabla cruzada sin factor</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>enoet322socdem_tiempo <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">sex=</span>sjlabelled<span class="sc">::</span><span class="fu">as_label</span>(sex)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">niv_ins=</span>sjlabelled<span class="sc">::</span><span class="fu">as_label</span>(niv_ins)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">tabyl</span>(niv_ins, sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   niv_ins Hombre Mujer
+                 No aplica  12095 11400
+       Primaria incompleta  37748 39654
+        Prrimaria completa  30322 33786
+       Secundaria completa  47120 55427
+ Medio superior y superior  60558 62499
+           No especificado    198   188</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tabulado con factor de expansión</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>enoet322socdem_tiempo <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">sex=</span>sjlabelled<span class="sc">::</span><span class="fu">as_label</span>(sex)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">niv_ins=</span>sjlabelled<span class="sc">::</span><span class="fu">as_label</span>(niv_ins)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  pollster<span class="sc">::</span><span class="fu">crosstab</span>(niv_ins, sex, <span class="at">weight =</span> fac_tri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  niv_ins                   Hombre Mujer        n
+  &lt;fct&gt;                      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 No aplica                   51.7  48.3  8058401
+2 Primaria incompleta         48.7  51.3 27610171
+3 Prrimaria completa          47.4  52.6 22332768
+4 Secundaria completa         46.4  53.6 33698636
+5 Medio superior y superior   48.9  51.1 36861377
+6 No especificado             59.0  41.0   104288</code></pre>
+</div>
+</div>
+</section>
+<section id="ojeando" class="level2">
+<h2 class="anchored" data-anchor-id="ojeando">Ojeando</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(enoet322socdem_tiempo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 390,995
 Columns: 129
@@ -458,7 +545,7 @@ $ t_total     &lt;dbl&gt; 840, 4320, 0, 0, 2100, 1260, 840, 2100, 840, 0, 420, 0
 $ t_total0    &lt;dbl&gt; 840, 4200, 0, 0, 2100, 1260, 840, 2100, 840, 0, 420, 0, 16…
 $ t_total_hrs &lt;dbl&gt; 14, 72, 0, 0, 35, 21, 14, 35, 14, 0, 7, 0, 28, 14, 14, 4, …</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(enoet322socdem_tiempo[,<span class="dv">20</span><span class="sc">:</span><span class="dv">30</span>]) <span class="co"># en corchete del lado derecho podemos ojear columnas </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(enoet322socdem_tiempo[,<span class="dv">20</span><span class="sc">:</span><span class="dv">30</span>]) <span class="co"># en corchete del lado derecho podemos ojear columnas </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 390,995
 Columns: 11
@@ -477,8 +564,8 @@ $ cs_p12   &lt;dbl+lbl&gt;  1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  1,  1,  1,  
 </div>
 <p>Podemos hacer un tipo “labelbook”, usando una función que viene de la librería “sjlabelled”, “get_labels”. Funciona para toda la base o para columnas, o para variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(get_labels(enoet322socdem_tiempo)) #todas</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">get_labels</span>(enoet322socdem_tiempo[, <span class="dv">20</span><span class="sc">:</span><span class="dv">30</span>])) <span class="co">#de las segundas 10 variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(get_labels(enoet322socdem_tiempo)) #todas</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">get_labels</span>(enoet322socdem_tiempo[, <span class="dv">20</span><span class="sc">:</span><span class="dv">30</span>])) <span class="co">#de las segundas 10 variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$per
 [1] "1ER DIGITO=Trimestre  ULTIMOS DOS=AÑO"
@@ -552,8 +639,8 @@ $cs_p12
 </div>
 <p>En singular nos da las etiquetas de las variables, no de los valores:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(get_label(enoet322socdem_tiempo)) #todas</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">get_label</span>(enoet322socdem_tiempo[, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])) <span class="co">#de las primeras 10 variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(get_label(enoet322socdem_tiempo)) #todas</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">get_label</span>(enoet322socdem_tiempo[, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])) <span class="co">#de las primeras 10 variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                 r_def                                    loc 
 "Resultado definitivo de la entevista"                            "Localidad" 
@@ -566,29 +653,25 @@ $cs_p12
                              t_loc_men                                   cd_a 
          "Tamaño de localidad mensual"             "Ciudad autorrepresentada" </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">get_label</span>(enoet322socdem_tiempo<span class="sc">$</span>eda)) <span class="co">#</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">get_label</span>(enoet322socdem_tiempo<span class="sc">$</span>eda)) <span class="co">#</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Edad"</code></pre>
 </div>
 </div>
-</section>
 <section id="selección-de-casos-y-de-variables" class="level3">
 <h3 class="anchored" data-anchor-id="selección-de-casos-y-de-variables">Selección de casos y de variables</h3>
 <p>Poco a poco vamos comprendiendo más la lógica de R. Hay varias “formas” de programar. Por lo que no te asustes si varios códigos llegan al mismo resultado</p>
 <p>Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo<span class="sc">$</span>ing_cor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Unknown or uninitialised column: `ing_cor`.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo[[<span class="st">"eda"</span>]]  <span class="co"># ¡Ojo con las comillas! </span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo[,<span class="dv">13</span>]</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo[,<span class="st">"eda"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo<span class="sc">$</span>eda</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo[[<span class="st">"eda"</span>]]  <span class="co"># ¡Ojo con las comillas! </span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo[,<span class="dv">13</span>]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo[,<span class="st">"eda"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ahora, con el formato de dplyr podemos llegar a lo mismo</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo <span class="sc">%&gt;%</span> </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(eda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span>enoet322socdem_tiempo <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(eda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -596,7 +679,7 @@ $cs_p12
 <h2 class="anchored" data-anchor-id="importación-desde-excel">Importación desde Excel</h2>
 <p>El paquete más compatible con RStudio es readxl. A veces, otros paquetes tienen más problemas de configuración entre R y el Java.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"datos/ICE_2022.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"para_importar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"datos/ICE_2022.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"para_importar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>New names:
 • `` -&gt; `...75`</code></pre>
@@ -605,7 +688,7 @@ $cs_p12
 <p>Como el nombre de paquete lo indica, sólo lee. Para escribir en este formato, recomiendo el paquete “writexl”. Lo instalamos anteriormente.</p>
 <p>Si quisiéramos exportar un objeto a Excel</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>writexl<span class="sc">::</span><span class="fu">write_xlsx</span>(ICE_2022, <span class="at">path =</span> <span class="st">"mi_exportacion.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>writexl<span class="sc">::</span><span class="fu">write_xlsx</span>(ICE_2022, <span class="at">path =</span> <span class="st">"mi_exportacion.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="limpieza-de-nombres" class="level2">
@@ -613,8 +696,8 @@ $cs_p12
 <p>A este data.frame podemos limpiarle los nombres, como vemos, sus nombres están “raros”. Esto pasa cuando usamos espacios, caracteres especiales o nombres muy largos.</p>
 <p>Veamos los nombre</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="sc">%&gt;%</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "id"                                                                 
  [2] "edo"                                                                
@@ -697,9 +780,9 @@ $cs_p12
 </div>
 <p>los vamos a limpiar:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="sc">%&gt;%</span> </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "id"                                                               
  [2] "edo"                                                              
@@ -782,16 +865,16 @@ $cs_p12
 </div>
 <p>Pero! Tenemos que volver a declarar el objeto con los cambios para que se guarden en el objeto</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ICE_2022<span class="ot">&lt;-</span>ICE_2022 <span class="sc">%&gt;%</span> </span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>ICE_2022<span class="ot">&lt;-</span>ICE_2022 <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="otro-operador" class="level2">
 <h2 class="anchored" data-anchor-id="otro-operador">Otro operador</h2>
 <p>Esta operación de guardar las acciones del <em>pipe</em> <code>%&gt;%</code> en el mismo objeto del que inician, se puede hacer con otro operador muy parecido <code>%&lt;&gt;%</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="sc">%&lt;&gt;%</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ICE_2022 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>¡Llevemos esta base a esquisse!</p>
 

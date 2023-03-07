@@ -2,7 +2,6 @@
 title: "Taller 2"
 ---
 
-
 ```{r}
 if (!require("pacman")) install.packages("pacman") # instala pacman si se requiere
 pacman::p_load(tidyverse, readxl, writexl, haven, sjlabelled, pollster,
@@ -10,12 +9,9 @@ pacman::p_load(tidyverse, readxl, writexl, haven, sjlabelled, pollster,
 
 ```
 
-
-## Datos 
+## Datos
 
 Recuerda, estos los puedes descargar desde el repo de la clase que hizo la profe <https://github.com/FCPyS/eacsii2023/tree/main/datos>
-
-
 
 ```{r}
 enoet322socdem_tiempo <- haven::read_dta("datos/enoet322socdem_tiempo.dta")
@@ -31,7 +27,7 @@ class(enoet322socdem_tiempo$sex)
 
 ```
 
-### Ejemplo de etiquetado
+## Ejemplo de etiquetado
 
 Para que se vea mejor nuestro tabulado, sería bueno que nuestras variables tuvieran etiqueta. Para ello utilizaremos el paquete "sjlabelled"
 
@@ -51,7 +47,64 @@ enoet322socdem_tiempo %>%
 
 ```
 
-### Ojeando
+
+## Descriptivos para variables cuantitativas
+
+Vamos a empezar a revisar los gráficos para variables cuantitativas.
+
+### Medidas numéricas básicas
+
+5 números
+
+```{r}
+summary(enoet322socdem_tiempo$eda) ## eda
+```
+
+Con pipes se pueden crear "indicadores" de nuestras variables es un tibble
+
+```{r}
+enoet322socdem_tiempo %>% 
+  summarise(nombre_indicador=mean(eda, na.rm=T))
+```
+
+### Histograma básico
+
+```{r}
+hist(enoet322socdem_tiempo$eda)
+```
+
+
+Le podemos modificar el título del eje de las x y de las y
+
+```{r}
+hist(enoet322socdem_tiempo$eda, 
+     main="Histograma de las edades de los entrevistados", 
+     xlab="Años cumplidos", ylab="Frecuencia") 
+```
+
+
+##  Tabulados bivariados 
+
+```{r}
+
+# tabla cruzada sin factor
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  dplyr::mutate(niv_ins=sjlabelled::as_label(niv_ins)) %>% 
+  janitor::tabyl(niv_ins, sex)
+
+# tabulado con factor de expansión
+
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  dplyr::mutate(niv_ins=sjlabelled::as_label(niv_ins)) %>% 
+  pollster::crosstab(niv_ins, sex, weight = fac_tri)
+  
+
+```
+
+
+## Ojeando
 
 ```{r}
 dplyr::glimpse(enoet322socdem_tiempo)
@@ -81,7 +134,7 @@ Poco a poco vamos comprendiendo más la lógica de R. Hay varias "formas" de pro
 Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos\$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.
 
 ```{r}
-x<-enoet322socdem_tiempo$ing_cor
+x<-enoet322socdem_tiempo$eda
 x<-enoet322socdem_tiempo[["eda"]]  # ¡Ojo con las comillas! 
 x<-enoet322socdem_tiempo[,13]
 x<-enoet322socdem_tiempo[,"eda"]
@@ -94,7 +147,6 @@ Ahora, con el formato de dplyr podemos llegar a lo mismo
 x<-enoet322socdem_tiempo %>% 
   select(eda)
 ```
-
 
 ## Importación desde Excel
 
@@ -113,10 +165,9 @@ Si quisiéramos exportar un objeto a Excel
 writexl::write_xlsx(ICE_2022, path = "mi_exportacion.xlsx")
 ```
 
-
 ## Limpieza de nombres
 
-A este data.frame podemos limpiarle los nombres, como vemos, sus nombres están "raros". Esto pasa cuando usamos espacios, caracteres especiales o nombres muy largos. 
+A este data.frame podemos limpiarle los nombres, como vemos, sus nombres están "raros". Esto pasa cuando usamos espacios, caracteres especiales o nombres muy largos.
 
 Veamos los nombre
 
@@ -135,21 +186,20 @@ ICE_2022 %>%
 
 Pero! Tenemos que volver a declarar el objeto con los cambios para que se guarden en el objeto
 
-
 ```{r}
 ICE_2022<-ICE_2022 %>% 
   janitor::clean_names()
 ```
 
-
 ## Otro operador
 
-Esta operación de guardar las acciones del *pipe*  `%>%`  en el mismo objeto del que inician, se puede hacer con otro operador muy parecido `%<>%`
-
+Esta operación de guardar las acciones del *pipe* `%>%` en el mismo objeto del que inician, se puede hacer con otro operador muy parecido `%<>%`
 
 ```{r}
 ICE_2022 %<>% 
   janitor::clean_names()
 ```
+
+
 
 ¡Llevemos esta base a esquisse!
