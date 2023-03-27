@@ -47,7 +47,6 @@ enoet322socdem_tiempo %>%
 
 ```
 
-
 ## Descriptivos para variables cuantitativas
 
 Vamos a empezar a revisar los gráficos para variables cuantitativas.
@@ -73,7 +72,6 @@ enoet322socdem_tiempo %>%
 hist(enoet322socdem_tiempo$eda)
 ```
 
-
 Le podemos modificar el título del eje de las x y de las y
 
 ```{r}
@@ -82,8 +80,7 @@ hist(enoet322socdem_tiempo$eda,
      xlab="Años cumplidos", ylab="Frecuencia") 
 ```
 
-
-##  Tabulados bivariados 
+## Tabulados bivariados
 
 ```{r}
 
@@ -102,7 +99,6 @@ enoet322socdem_tiempo %>%
   
 
 ```
-
 
 ## Ojeando
 
@@ -199,7 +195,5 @@ Esta operación de guardar las acciones del *pipe* `%>%` en el mismo objeto del 
 ICE_2022 %<>% 
   janitor::clean_names()
 ```
-
-
 
 ¡Llevemos esta base a esquisse!

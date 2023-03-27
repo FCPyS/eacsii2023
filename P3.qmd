@@ -1,0 +1,183 @@
+---
+title: "Taller 3"
+---
+
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instala pacman si se requiere
+pacman::p_load(tidyverse, readxl, writexl, haven, sjlabelled, pollster,
+               janitor, magrittr) #carga los paquetes listados
+
+```
+
+## Datos
+
+Recuerda, estos los puedes descargar desde el repo de la clase que hizo la profe <https://github.com/FCPyS/eacsii2023/tree/main/datos>
+
+```{r}
+enoet322socdem_tiempo <- haven::read_dta("datos/enoet322socdem_tiempo.dta")
+```
+
+
+## Filtros
+
+Los filtros seleccionan **casos** que cumplen con una condición. 
+
+- Se pueden usar varias condiciones con los operadores `&` y `|`
+
+- Se puede negar una condición con el operador `!`
+
+- El operador `%in%` o `match` puede combinarse con vectores como listas de elementos válidos en una variable
+
+Aquí unos ejemplos:
+
+```{r}
+
+enoet322socdem_tiempo %>% 
+  dplyr::filter(eda>14) # cumple con la condición de mayores de 14 años 
+
+
+enoet322socdem_tiempo %>% 
+  dplyr::filter(!eda>14) # NO cumple con la condición de mayores de 14 años
+
+
+enoet322socdem_tiempo %>% 
+  dplyr::filter(eda>14 & sex==2) # la condición que sea mujer Y mayor de 14 años
+
+
+
+enoet322socdem_tiempo %>% 
+  dplyr::filter(eda>14 | sex==2) # la condición que sea mujer O mayor de 14 años
+
+
+# Veracruz - 30
+# Puebla - 21
+# Guanajuato - 11
+# Nuevo León - 19
+
+
+enoet322socdem_tiempo %>% 
+  filter(ent%in%c(30, 21, 11, 19))
+
+
+```
+
+
+Los filtros son útiles para identificar la población objetivo dentro del cuestionario. 
+
+```{r}
+
+# Filtro para identificar una población en nuestro cuestionario
+
+
+enoet322socdem_tiempo %>% 
+  filter(eda>5) %>% 
+  select(anios_esc) %>% 
+  summary()
+
+```
+
+
+## Gráficos con filtros 
+
+Si bien ya habíamos hecho gráficas con `{esquisse}`, ahí es era un difícil establecer filtros. Por ello usaremos directamente el paquete `{ggplot2}`
+
+
+
+Cheatsheet en español: <https://diegokoz.github.io/intro_ds/fuentes/ggplot2-cheatsheet-2.1-Spanish.pdf>
+
+El ggplot2 se basa en la construcción de gráficos a partir de tres componentes:
+
+1)  Datos,
+
+2)  Coordenadas y
+
+3)  Objetos geométricos
+
+Esto será nuestra "gramática de gráficas"
+
+Para visualizar los resultados, nosotres asignamos variables a las propiedades visuales o estéticas
+
+Por ejemplo: los tamaños, colores y posiciones.
+
+De manera genérica, podríamos pensar que el código para el ggplot será de la siguiente manera:
+
+`ggplot(datos) + (geometria) + (esteticas)`
+
+
+
+```{r}
+
+enoet322socdem_tiempo %>% 
+  filter(eda>5) %>% 
+  ggplot2::ggplot() +
+  aes(x=anios_esc) +
+  geom_histogram()
+
+
+enoet322socdem_tiempo %>% 
+  filter(eda>5) %>% 
+  ggplot2::ggplot() +
+  aes(x=anios_esc) +
+  geom_density()
+
+
+
+enoet322socdem_tiempo %>% 
+  filter(eda>5) %>%  
+  ggplot2::ggplot() +
+  aes(x=anios_esc) +
+  geom_density() +
+  facet_wrap(vars(as_label(sex)))
+```
+
+
+## Tabulados de doble entrada
+
+### tabla cruzada sin factor
+
+- Los adornos de janitor cambian la lógica 
+- Tenemos que saber qué variables queremos
+
+```{r}
+
+enoet322socdem_tiempo %>% 
+  filter(clase1==1) %>%  # nos quedamos con la p. ocupada
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  dplyr::mutate(clase2=sjlabelled::as_label(clase2)) %>% 
+  janitor::tabyl(clase2, sex)
+
+```
+
+
+Agregando adornos
+
+
+```{r}
+
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  dplyr::mutate(clase2=sjlabelled::as_label(clase2)) %>% 
+  janitor::tabyl(clase2, sex) %>% 
+  janitor::adorn_totals(where = "row") %>% 
+  janitor::adorn_percentages("col") %>% 
+  janitor::adorn_pct_formatting(digits = 2)
+
+```
+
+
+
+
+
+### tabla cruzada con factor de expansión
+Mucho cuidado con los adornitos
+
+```{r}
+
+enoet322socdem_tiempo %>% 
+  dplyr::mutate(sex=sjlabelled::as_label(sex)) %>% 
+  dplyr::mutate(clase2=sjlabelled::as_label(clase2)) %>% 
+  pollster::crosstab(clase2, sex, weight = fac_tri)
+  
+```
+
